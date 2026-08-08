@@ -63,6 +63,7 @@ For each issue:
 7. Summarize the changes and test results.
 
 Do not start implementation immediately when asked to work on an issue unless the implementation approach is already clear and agreed upon.
+When information is missing, identify only the missing information required for the current issue. Do not block implementation on unrelated future decisions.
 
 ## Design principles
 
