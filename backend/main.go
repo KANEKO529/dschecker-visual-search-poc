@@ -1,13 +1,8 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import "github.com/KANEKO529/dschecker-visual-search-poc/backend/internal/router"
 
 func main() {
-	router := gin.Default()
-
-	router.GET("/health", func(c *gin.Context) {
-		c.JSON(200, gin.H{"status": "ok"})
-	})
-
-	router.Run("localhost:3001")
+	r := router.New()
+	r.Run("localhost:3001")
 }
