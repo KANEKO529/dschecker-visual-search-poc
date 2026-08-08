@@ -105,6 +105,21 @@ This includes:
 
 All Git and GitHub write operations are performed by the user.
 
+## Pull Request review rules
+
+Pull Requests use the template at `.github/PULL_REQUEST_TEMPLATE.md`.
+
+Claude Code proposes Pull Request body content that follows this template.
+Creating the Pull Request itself remains a user responsibility, as defined in "Git and GitHub responsibility" above.
+
+When reviewing a Pull Request, check that:
+
+- The change stays within the scope described in the linked Issue
+- The Pull Request body accurately reflects the actual diff
+- Required tests were run and their results are recorded
+- Impact on other systems is described
+- The points to review are clearly stated
+
 ## Destructive Git operations
 
 Claude Code must never execute destructive Git operations.
