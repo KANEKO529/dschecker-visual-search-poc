@@ -10,6 +10,7 @@ func New() *gin.Engine {
 	r := gin.Default()
 
 	r.GET("/health", handler.Health)
+	r.POST("/api/poc/images", handler.UploadImage)
 
 	return r
 }
