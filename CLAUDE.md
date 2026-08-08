@@ -6,6 +6,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 PoC for DSchecker visual search using DINOv3 and vector similarity search. The project verifies whether DSchecker can identify products using image embeddings instead of OCR-based model number recognition.
 
+## Project documentation
+
+Before making architectural or cross-layer changes, read the relevant documentation under `docs/`.
+
+- `docs/development.md` — development workflow, Issue/PR rules, and testing expectations
+- `docs/architecture.md` — system architecture, component responsibilities, data ownership, and integration boundaries
+
+
 ## Repository status
 
 This repository is currently a skeleton: `backend/`, `frontend/`, and `inference/` are empty placeholder directories (each holding only a `.gitkeep`). No build, lint, or test tooling has been added yet. When code is added to one of these directories, check for a README or config file inside it (e.g. `package.json`, `go.mod`, `pyproject.toml`) for the actual commands, and update this file accordingly.
@@ -20,9 +28,8 @@ This repository is currently a skeleton: `backend/`, `frontend/`, and `inference
 
 ### Data storage
 
-- PostgreSQL
-- pgvector
-- Product embeddings are stored in `item_embeddings`.
+- PostgreSQL / pgvector are owned by the existing Rails application.
+- Product embeddings are stored in the Rails-managed `item_embeddings` table.
 
 ### Related Rails application
 
@@ -64,13 +71,6 @@ Do not start implementation immediately when asked to work on an issue unless th
 - The initial image embedding model is DINOv3 ViT-S.
 - Product embeddings are stored separately from items so that one product can have multiple embeddings.
 - Avoid changing established architecture or technology choices without first explaining the reason and impact.
-
-## External dependencies
-
-- Existing DSchecker Rails API
-  - Used as an external API by this PoC.
-  - The Rails application is not implemented or modified in this repository.
-  - Do not assume changes to the Rails API are part of a PoC issue unless explicitly stated.
 
 ## Rails integration
 
