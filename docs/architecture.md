@@ -30,6 +30,19 @@ backend/
 - `internal/` is not imported by any package outside `backend/`, so this layering is internal to the Go backend module.
 - This structure covers entrypoint / routing / handler / outbound-client separation only. Service and repository layers are intentionally not introduced yet, since the Go backend does not access a database directly.
 
+## Inference directory structure
+
+```
+inference/
+  main.py              # FastAPI app and routes. Contains no embedding generation logic.
+  embedding/
+    model.py             # Loads DINOv3 ViT-S and generates image embeddings.
+```
+
+- `embedding/model.py` has no dependency on FastAPI or `main.py`. It exposes a plain Python function that can be called independently of the HTTP layer.
+- The model and image processor are loaded once (lazily, on first use) and reused across calls, not reloaded per request.
+- `main.py` does not depend on `embedding/` yet; wiring an endpoint to the embedding generation function is left to a future Issue.
+
 ## Frontend directory structure
 
 ```
