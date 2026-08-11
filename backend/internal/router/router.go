@@ -21,6 +21,7 @@ func New() *gin.Engine {
 
 	r.GET("/health", handler.Health)
 	r.POST("/api/poc/images", handler.UploadImage)
+	r.POST("/api/poc/embeddings", handler.GenerateEmbedding)
 
 	return r
 }
