@@ -3,3 +3,8 @@ export type UploadImageResponse = {
   size: number;
   contentType: string;
 };
+
+export type GenerateEmbeddingResponse = {
+  dimension: number;
+  embedding: number[];
+};
