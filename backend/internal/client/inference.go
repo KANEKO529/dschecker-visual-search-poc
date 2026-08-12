@@ -7,10 +7,21 @@ import (
 	"io"
 	"mime/multipart"
 	"net/http"
+	"os"
 	"time"
 )
 
-const inferenceBaseURL = "http://localhost:3002"
+const defaultInferenceBaseURL = "http://localhost:3002"
+
+// inferenceBaseURL returns the inference service base URL. It defaults to
+// defaultInferenceBaseURL, and can be overridden via INFERENCE_API_BASE_URL
+// (used by tests to point at a mock server).
+func inferenceBaseURL() string {
+	if v := os.Getenv("INFERENCE_API_BASE_URL"); v != "" {
+		return v
+	}
+	return defaultInferenceBaseURL
+}
 
 var httpClient = &http.Client{Timeout: 10 * time.Second}
 
@@ -32,7 +43,7 @@ func ForwardImage(file io.Reader, filename string) error {
 		return fmt.Errorf("close multipart writer: %w", err)
 	}
 
-	req, err := http.NewRequest(http.MethodPost, inferenceBaseURL+"/internal/images", body)
+	req, err := http.NewRequest(http.MethodPost, inferenceBaseURL()+"/internal/images", body)
 	if err != nil {
 		return fmt.Errorf("create request: %w", err)
 	}
@@ -77,7 +88,7 @@ func GenerateEmbedding(file io.Reader, filename string) (*EmbeddingResponse, err
 		return nil, fmt.Errorf("close multipart writer: %w", err)
 	}
 
-	req, err := http.NewRequest(http.MethodPost, inferenceBaseURL+"/internal/embeddings", body)
+	req, err := http.NewRequest(http.MethodPost, inferenceBaseURL()+"/internal/embeddings", body)
 	if err != nil {
 		return nil, fmt.Errorf("create request: %w", err)
 	}
