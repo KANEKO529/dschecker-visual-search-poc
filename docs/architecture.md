@@ -13,22 +13,26 @@
 
 ```
 backend/
-  main.go              # Entrypoint. Builds the router and starts the server.
+  main.go              # Entrypoint. Loads environment variables, builds the router, and starts the server.
   internal/
     router/
       router.go         # Creates the gin.Engine and registers routes to handlers.
     handler/
       health.go          # Request handlers, one file per endpoint (e.g. health.go for GET /health).
+    service/
+      embedding_registration.go  # Orchestrates flows that call more than one internal/client in sequence.
     client/
-      inference.go       # Outbound HTTP clients to external services (e.g. the inference service).
+      inference.go       # Outbound HTTP client to the Python inference service.
+      rails.go            # Outbound HTTP client to the Rails internal API.
 ```
 
 - `main.go` depends on `internal/router` only. It does not know about individual handlers or routes.
 - `internal/router` depends on `internal/handler`. It owns route-to-handler wiring and does not contain business logic.
-- `internal/handler` has no dependency on `internal/router`. Each file implements the handler(s) for one endpoint. A handler may depend on `internal/client` when it needs to communicate with an external service.
-- `internal/client` is responsible for outbound HTTP communication with external services (currently the inference service only). It has no dependency on `internal/handler` or `internal/router`, and does not depend on `gin`.
+- `internal/handler` has no dependency on `internal/router`. Each file implements the handler(s) for one endpoint. A handler depends on `internal/client` directly when it only needs a single external call, or on `internal/service` when the endpoint orchestrates multiple external calls in sequence.
+- `internal/service` orchestrates flows that call more than one `internal/client` in sequence (e.g. generating an embedding via the inference service, then registering it with Rails). It has no dependency on `internal/handler` or `internal/router`, and does not depend on `gin`. It does not access a database.
+- `internal/client` is responsible for outbound HTTP communication with external services (the inference service and the Rails internal API). It has no dependency on `internal/handler`, `internal/service`, or `internal/router`, and does not depend on `gin`.
 - `internal/` is not imported by any package outside `backend/`, so this layering is internal to the Go backend module.
-- This structure covers entrypoint / routing / handler / outbound-client separation only. Service and repository layers are intentionally not introduced yet, since the Go backend does not access a database directly.
+- This structure covers entrypoint / routing / handler / service / outbound-client separation. A repository layer is intentionally not introduced yet, since the Go backend does not access a database directly.
 
 ## Inference directory structure
 
