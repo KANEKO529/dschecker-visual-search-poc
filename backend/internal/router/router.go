@@ -23,6 +23,7 @@ func New() *gin.Engine {
 	r.POST("/api/poc/images", handler.UploadImage)
 	r.POST("/api/poc/embeddings", handler.GenerateEmbedding)
 	r.POST("/api/poc/items/:modelNumber/embeddings", handler.RegisterItemEmbedding)
+	r.POST("/api/poc/items/search-by-image", handler.SearchItemsByImage)
 
 	return r
 }
