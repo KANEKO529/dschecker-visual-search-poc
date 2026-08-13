@@ -1,4 +1,5 @@
 import EmbeddingRegistrationForm from "@/features/embedding-registration/components/EmbeddingRegistrationForm";
+import ImageSearchForm from "@/features/image-search/components/ImageSearchForm";
 import ImageUploadForm from "@/features/image-upload/components/ImageUploadForm";
 
 export default function Home() {
@@ -10,9 +11,10 @@ export default function Home() {
         </h1>
       </main>
 
-      <div className="flex w-full max-w-5xl flex-col items-start justify-center gap-6 md:flex-row">
+      <div className="flex w-full max-w-8xl flex-col items-start justify-center gap-6 md:flex-row">
         <ImageUploadForm />
         <EmbeddingRegistrationForm />
+        <ImageSearchForm />
       </div>
     </div>
   );
